@@ -14,3 +14,5 @@ FROM
 JOIN
     {{ref("stg_raw__ship")}} AS ship
 ON marg.orders_id = ship.orders_id
+ORDER BY
+    orders_id DESC
