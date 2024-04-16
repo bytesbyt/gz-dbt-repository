@@ -22,6 +22,12 @@ sources:
         tests:
           - unique:
               column_name: "(orders_id || '-' || pdt_id)"
+        freshness: 
+          warn_after:
+            period: "day"
+            count: 90
+        loaded_at_field: "CAST(date_date as TIMESTAMP)"
+        
       - name: product
         identifier: raw_gz_product
         description: product of greenweez
