@@ -8,9 +8,6 @@ sources:
       - name: sales
         identifier: raw_gz_sales
         description: sales of greenweez / we have one row per product_id found in each orders_id.
-        tests:
-          - unique:
-              column_name: "( products_id || '-' || date_date)"
         columns:
           - name: date_date
             description: the date of purchase
@@ -18,11 +15,13 @@ sources:
             description: order id number
           - name: products_id
             description: product id number
-
           - name: revenue
             description: revenue of each product
           - name: quantity
             description: quantity of items ordered for each product
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || pdt_id)"
       - name: product
         identifier: raw_gz_product
         description: product of greenweez
