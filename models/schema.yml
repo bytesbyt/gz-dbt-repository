@@ -1,5 +1,6 @@
 version: 2
 
+
 sources:
   - name: raw
     schema: gz_raw_data
@@ -56,5 +57,109 @@ sources:
           - name: ship_cost
             description: shipping cost
           
-
+models:
+  - name: int_sales_mergin
+    description: margin calcultation per sales
+    tests: 
+      - unique:
+          column_name: "(orders_id || '-' || products_id)"
+          description: primary key
+      - not_null:
+          column_name:
+            - name: orders_id 
+              description: order id of each order per product
+            - name: products_id 
+              description: product id of each product
+            - name: margin
+              description: revenue - (quantity * purchase_price) = margin
+            - name: purchase_cost
+              description: quantity * purchase_price = purchase_cost
+            - name: purchase_price
+              description: purchase price of each product
+            - name: date_date
+              description: date of each order per product
+            - name: revenue
+              description: revenue of each order per product
+            - name: quantity
+              description: quantity of ordered product for each order
+  - name: int_orders_margin
+    description: margin calcultation per order 
+    tests: 
+      - unique:
+          column_name: "orders_id"
+          description: primary key
+      - not_null:
+          column_name:
+            - name: orders_id
+              description: primary key
+            - name: date_date
+              description: date of the order
+            - name: revenue
+              description: sum of revenue per order
+            - name: quantity
+              description: sum of quantitiy per order
+            - name: purchase_cost
+              description: purchase_cost = quantity * purchase_price
+            - name: margin
+              description: margin = revenue - purchase cost
+  - name: int_orders_operational
+    description: margin calcultation per order 
+    tests: 
+      - unique:
+          column_name: "orders_id"
+          description: primary key
+      - not_null:
+          column_name:
+            - name: orders_id
+              description: primary key
+            - name: date_date
+              description: date of the order
+            - name: operational_margin
+              description: (operational.margin + ship.shipping_fee) - (ship.logcost + ship.ship_cost),2) = operational_margin
+            - name: revenue
+              description: revenue per order
+            - name: quantity
+              description: quatity per order
+            - name: purcahse_cost
+              description: purchase cost per order
+            - name: margin
+              description: margin per order
+            - name: shipping_fee
+              description: shipping fee per order
+            - name: logcost
+              description: logcost per order
+            - name: ship_cost
+              description: ship cost per order
+  - name: finance_days
+    description: margin calcultation per order 
+    tests: 
+      - unique:
+          column_name: "date_date"
+          description: primary key
+      - not_null:
+          column_name:
+            - name: date_date
+              description: primary key
+            - name: nb_transactions
+              description: sum of transactions
+            - name: revenue
+              description: sum of revenue
+            - name: average_basket
+              description: SUM(revenue)/COUNT(orders_id) = average_basket
+            - name: average_basket_bis
+              description: SUM(revenue)/COUNT(orders_id) = average_basket
+            - name: margin
+              description: sum of margin
+            - name: operational_margin
+              description:  sum of operational margin
+            - name: purchase_cost
+              description: sum of purcahse cost
+            - name: shipping_fee
+              description: sum of shipping fee
+            - name: logcost
+              description: sum of logcost
+            - name: ship_cost
+              description: sum of ship cost
+            - name: quantity
+              description: sum of quantity
 
