@@ -63,7 +63,6 @@ models:
     tests: 
       - unique:
           column_name: "(orders_id || '-' || products_id)"
-          description: primary key
       - not_null:
           column_name:
             - name: orders_id 
@@ -87,7 +86,6 @@ models:
     tests: 
       - unique:
           column_name: "orders_id"
-          description: primary key
       - not_null:
           column_name:
             - name: orders_id
@@ -107,7 +105,6 @@ models:
     tests: 
       - unique:
           column_name: "orders_id"
-          description: primary key
       - not_null:
           column_name:
             - name: orders_id
@@ -135,7 +132,6 @@ models:
     tests: 
       - unique:
           column_name: "date_date"
-          description: primary key
       - not_null:
           column_name:
             - name: date_date
