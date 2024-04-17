@@ -39,10 +39,10 @@ models:
   my_new_project:
     # Applies to all files under models/example/
     staging:
-      +materialized: table
+      +materialized: view
     intermediate:
       +materialized: view
-    mart:
+    marts:
       +materialized: table
-      fiance:
-        +schema: mart
+      finance:
+        +schema: finance
