@@ -60,11 +60,7 @@ sources:
 models:
   - name: int_sales_mergin
     description: margin calcultation per sales
-    tests: 
-      - unique:
-          column_name: "(orders_id || '-' || products_id)"
-      - not_null:
-          column_name:
+    columns:
             - name: orders_id 
               description: order id of each order per product
             - name: products_id 
@@ -81,32 +77,50 @@ models:
               description: revenue of each order per product
             - name: quantity
               description: quantity of ordered product for each order
+    tests: 
+      - unique:
+          column_name: "(orders_id || '-' || products_id)"
+      - not_null:
+          column_name:
+            - orders_id 
+            - products_id 
+            - margin
+            - purchase_cost
+            - purchase_price
+            - date_date
+            - revenue
+            - quantity
+
   - name: int_orders_margin
-    description: margin calcultation per order 
+    description: margin calcultation per order
+    columns:
+      - name: orders_id
+        description: primary key
+      - name: date_date
+        description: date of order
+      - name: revenue
+        description: revenue per order
+      - name: quantity
+        description: quantity per order
+      - name: purchase_cost
+        description: purchase cosr per order
+      - name: margin
+        description: margin per order
     tests: 
       - unique:
           column_name: "orders_id"
       - not_null:
           column_name:
-            - name: orders_id
-              description: primary key
-            - name: date_date
-              description: date of the order
-            - name: revenue
-              description: sum of revenue per order
-            - name: quantity
-              description: sum of quantitiy per order
-            - name: purchase_cost
-              description: purchase_cost = quantity * purchase_price
-            - name: margin
-              description: margin = revenue - purchase cost
+            - orders_id
+            - date_date
+            - revenue
+            - quantity
+            - purchase_cost
+            - margin
+
   - name: int_orders_operational
-    description: margin calcultation per order 
-    tests: 
-      - unique:
-          column_name: "orders_id"
-      - not_null:
-          column_name:
+    description: margin calcultation per order
+    columns:
             - name: orders_id
               description: primary key
             - name: date_date
@@ -127,13 +141,24 @@ models:
               description: logcost per order
             - name: ship_cost
               description: ship cost per order
-  - name: finance_days
-    description: margin calcultation per order 
     tests: 
       - unique:
-          column_name: "date_date"
+          column_name: "orders_id"
       - not_null:
           column_name:
+            - orders_id
+            - date_date
+            - operational_margin
+            - revenue
+            - quantity
+            - purcahse_cost
+            - margin
+            - shipping_fee
+            - logcost
+            - ship_cost
+  - name: finance_days
+    description: margin calcultation per order
+    columns:
             - name: date_date
               description: primary key
             - name: nb_transactions
@@ -154,8 +179,22 @@ models:
               description: sum of shipping fee
             - name: logcost
               description: sum of logcost
-            - name: ship_cost
-              description: sum of ship cost
-            - name: quantity
-              description: sum of quantity
+    tests: 
+      - unique:
+          column_name: "date_date"
+      - not_null:
+          column_name:
+            - date_date
+            - nb_transactions
+            - revenue
+            - average_basket
+            - average_basket_bis
+            - margin
+            - operational_margin
+            - purchase_cost
+            - shipping_fee
+            - logcost
+            - ship_cost
+            - quantity
+
 
