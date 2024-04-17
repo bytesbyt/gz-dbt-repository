@@ -56,6 +56,94 @@ sources:
             description: logestics cost
           - name: ship_cost
             description: shipping cost
+
+      - name: adwords
+        identifier: raw_gz_adwords
+        description: ad campaign details at adwords
+        columns:
+          - name: date_date
+            description: primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: paid_source
+            description: Name of the platform that campaign is running on
+          - name: campaign_key
+            description: campaign key number
+          - name: campgn_name
+            description: name of the campaign
+          - name: ads_cost
+            description: cost of the ad
+          - name: impression
+            description: number of people seeing the ad
+          - name: click
+            description: number of people clicking on the ad
+
+      - name: bing
+        identifier: raw_gz_bing
+        description: product of greenweez
+        columns:
+          - name: date_date
+            description: primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: paid_source
+            description: Name of the platform that campaign is running on
+          - name: campaign_key
+            description: campaign key number
+          - name: campgn_name
+            description: name of the campaign
+          - name: ads_cost
+            description: cost of the ad
+          - name: impression
+            description: number of people seeing the ad
+          - name: click
+            description: number of people clicking on the ad
+            
+      - name: criteo
+        identifier: raw_gz_criteo
+        description: product of greenweez
+        columns:
+          - name: date_date
+            description: primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: paid_source
+            description: Name of the platform that campaign is running on
+          - name: campaign_key
+            description: campaign key number
+          - name: campgn_name
+            description: name of the campaign
+          - name: ads_cost
+            description: cost of the ad
+          - name: impression
+            description: number of people seeing the ad
+          - name: click
+            description: number of people clicking on the ad
+
+      - name: facebook
+        identifier: raw_gz_facebook
+        description: product of greenweez
+        columns:
+          - name: date_date
+            description: primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: paid_source
+            description: Name of the platform that campaign is running on
+          - name: campaign_key
+            description: campaign key number
+          - name: campgn_name
+            description: name of the campaign
+          - name: ads_cost
+            description: cost of the ad
+          - name: impression
+            description: number of people seeing the ad
+          - name: click
+            description: number of people clicking on the ad
           
 models:
   - name: int_sales_mergin
