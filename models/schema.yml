@@ -97,6 +97,9 @@ sources:
             description: number of people seeing the ad
           - name: click
             description: number of people clicking on the ad
+        tests:
+          - unique:
+              column_name: "(date_date || '-' || campaign_key)"
 
       - name: criteo
         identifier: raw_gz_criteo
@@ -116,6 +119,9 @@ sources:
             description: number of people seeing the ad
           - name: click
             description: number of people clicking on the ad
+        tests:
+          - unique:
+              column_name: "(date_date || '-' || campaign_key)"
 
       - name: facebook
         identifier: raw_gz_facebook
@@ -135,6 +141,9 @@ sources:
             description: number of people seeing the ad
           - name: click
             description: number of people clicking on the ad
+        tests:
+          - unique:
+              column_name: "(date_date || '-' || campaign_key)"
           
 models:
   - name: int_sales_mergin
