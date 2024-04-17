@@ -1,0 +1,200 @@
+version: 2
+
+
+sources:
+  - name: raw
+    schema: gz_raw_data
+    description: greenweez raw data source
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: sales of greenweez / we have one row per product_id found in each orders_id.
+        columns:
+          - name: date_date
+            description: the date of purchase
+          - name: orders_id
+            description: order id number
+          - name: products_id
+            description: product id number
+          - name: revenue
+            description: revenue of each product
+          - name: quantity
+            description: quantity of items ordered for each product
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || pdt_id)"
+        freshness: 
+          warn_after:
+            period: "day"
+            count: 90
+        loaded_at_field: "CAST(date_date as TIMESTAMP)"
+        
+      - name: product
+        identifier: raw_gz_product
+        description: product of greenweez
+        columns:
+          - name: products_id
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: purchase_price
+            description: purchase price of each product
+
+      - name: ship
+        identifier: raw_gz_ship
+        description: shipping data of greenweez products
+        columns:
+          - name: orders_id
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+            description: shipping fee charged
+          - name: logcost
+            description: logestics cost
+          - name: ship_cost
+            description: shipping cost
+          
+models:
+  - name: int_sales_mergin
+    description: margin calcultation per sales
+    columns:
+            - name: orders_id 
+              description: order id of each order per product
+            - name: products_id 
+              description: product id of each product
+            - name: margin
+              description: revenue - (quantity * purchase_price) = margin
+            - name: purchase_cost
+              description: quantity * purchase_price = purchase_cost
+            - name: purchase_price
+              description: purchase price of each product
+            - name: date_date
+              description: date of each order per product
+            - name: revenue
+              description: revenue of each order per product
+            - name: quantity
+              description: quantity of ordered product for each order
+    tests: 
+      - unique:
+          column_name: "(orders_id || '-' || products_id)"
+      - not_null:
+          column_name:
+            - orders_id 
+            - products_id 
+            - margin
+            - purchase_cost
+            - purchase_price
+            - date_date
+            - revenue
+            - quantity
+
+  - name: int_orders_margin
+    description: margin calcultation per order
+    columns:
+      - name: orders_id
+        description: primary key
+      - name: date_date
+        description: date of order
+      - name: revenue
+        description: revenue per order
+      - name: quantity
+        description: quantity per order
+      - name: purchase_cost
+        description: purchase cosr per order
+      - name: margin
+        description: margin per order
+    tests: 
+      - unique:
+          column_name: "orders_id"
+      - not_null:
+          column_name:
+            - orders_id
+            - date_date
+            - revenue
+            - quantity
+            - purchase_cost
+            - margin
+
+  - name: int_orders_operational
+    description: margin calcultation per order
+    columns:
+            - name: orders_id
+              description: primary key
+            - name: date_date
+              description: date of the order
+            - name: operational_margin
+              description: (operational.margin + ship.shipping_fee) - (ship.logcost + ship.ship_cost),2) = operational_margin
+            - name: revenue
+              description: revenue per order
+            - name: quantity
+              description: quatity per order
+            - name: purcahse_cost
+              description: purchase cost per order
+            - name: margin
+              description: margin per order
+            - name: shipping_fee
+              description: shipping fee per order
+            - name: logcost
+              description: logcost per order
+            - name: ship_cost
+              description: ship cost per order
+    tests: 
+      - unique:
+          column_name: "orders_id"
+      - not_null:
+          column_name:
+            - orders_id
+            - date_date
+            - operational_margin
+            - revenue
+            - quantity
+            - purcahse_cost
+            - margin
+            - shipping_fee
+            - logcost
+            - ship_cost
+  - name: finance_days
+    description: margin calcultation per order
+    columns:
+            - name: date_date
+              description: primary key
+            - name: nb_transactions
+              description: sum of transactions
+            - name: revenue
+              description: sum of revenue
+            - name: average_basket
+              description: SUM(revenue)/COUNT(orders_id) = average_basket
+            - name: average_basket_bis
+              description: SUM(revenue)/COUNT(orders_id) = average_basket
+            - name: margin
+              description: sum of margin
+            - name: operational_margin
+              description:  sum of operational margin
+            - name: purchase_cost
+              description: sum of purcahse cost
+            - name: shipping_fee
+              description: sum of shipping fee
+            - name: logcost
+              description: sum of logcost
+    tests: 
+      - unique:
+          column_name: "date_date"
+      - not_null:
+          column_name:
+            - date_date
+            - nb_transactions
+            - revenue
+            - average_basket
+            - average_basket_bis
+            - margin
+            - operational_margin
+            - purchase_cost
+            - shipping_fee
+            - logcost
+            - ship_cost
+            - quantity
+
+
